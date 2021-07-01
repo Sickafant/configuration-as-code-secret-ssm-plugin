@@ -2,6 +2,7 @@ package com.bambora.jenkins.plugin.casc.secrets.ssm;
 
 import com.amazonaws.SdkClientException;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagement;
 import com.amazonaws.services.simplesystemsmanagement.AWSSimpleSystemsManagementClientBuilder;
 import com.amazonaws.services.simplesystemsmanagement.model.AWSSimpleSystemsManagementException;
@@ -49,6 +50,11 @@ public class AwsSsmSecretSource extends SecretSource {
     private AWSSimpleSystemsManagement getClient() {
         AWSSimpleSystemsManagementClientBuilder builder = AWSSimpleSystemsManagementClientBuilder.standard();
         builder.setCredentials(new DefaultAWSCredentialsProviderChain());
+
+        final AwsClientBuilder.EndpointConfiguration endpointConfiguration =
+                new AwsClientBuilder.EndpointConfiguration("http://localstack:4566", "us-east-1");
+        builder.setEndpointConfiguration(endpointConfiguration);
+
         return builder.build();
     }
 
